@@ -2,31 +2,32 @@
 <template>
   <div>
   <nav-bar class="home-nav"><div slot="center">首页</div></nav-bar>
+  <swiper></swiper>
 </div>
-
 </template>
 
 <script>
 import NavBar from 'components/common/navbar/NavBar.vue';
-import {getHomeMultidata} from 'network/home';
-
+import swiper from 'views/home/homeswiper/swiper';
+// import {getHomeMultidata} from 'network/home';
 
 export default {
 name:'Home',
 components:{
-NavBar
+NavBar,
+swiper
 },
   data () {
     return {
        result:null,
     }
   },
-created(){
-getHomeMultidata().then(res=>{
-  console.log(res)
-  this.result=res;
-})
-}
+// created(){
+//     getHomeMultidata().then(res=>{
+//        console.log(res)
+//        this.result=res;
+//      })
+//     }
 }
 </script>
 
