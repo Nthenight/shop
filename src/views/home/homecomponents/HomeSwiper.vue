@@ -1,13 +1,13 @@
+<!--Home页面轮播图-->
 <template>
 <swiper :options="swiperOption">
-  <swiper-slide>
-       <a href=""><img class="banner-img" src="~@/assets/img/user/user.svg" /></a> 
+  <swiper-slide v-for="item in banners" :key="item._id">
+       <a href="/home">
+         <img class="banner-img" :src="item.url"/>
+        </a> 
      </swiper-slide>
-    <swiper-slide>
-       <a href=""><img class="banner-img" src="~@/assets/img/user/useraf.svg" /></a>
-    </swiper-slide>
     <!-- 指示点 -->
-    <div class="swiper-pagination"  slot="pagination"></div>
+    <!-- <div class="swiper-pagination"  slot="pagination"></div> -->
 </swiper>
 </template>
 <script>
@@ -15,9 +15,18 @@
   import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
   import swiper from 'swiper/bundle';
  export default {
+    name:'HomeSwiper',
     components: {
       Swiper,
       SwiperSlide
+    },
+    props:{
+      banners:{
+        type:Array,
+        default(){
+          return []
+        }
+      }
     },
     data() {
       return {
@@ -46,13 +55,23 @@
 @import '../../../../node_modules/swiper/swiper-bundle.min.css';
  .swiper-container {
       width: 100%;
-      height: 100%;
+      height: 450px;
+      background: red;
     }
-
+    /* .swiper-wrapper{
+      height: 100%;
+      width: 100%;
+    } */
+    /* .banner-img{
+      width: 100%;
+      height: 100%;
+    } */
     .swiper-slide {
+      /* width: 100%;
+      height: 100%; */
       text-align: center;
       font-size: 18px;
-      background: #fff;
+      /* background: #fff; */
 
       /* Center slide text vertically */
       display: -webkit-box;
@@ -70,6 +89,6 @@
     }
       .swiper-container{
     /* --swiper-theme-color: #ff6600; */
-    --swiper-pagination-color: #00ff33;/* 两种都可以 */
+    --swiper-pagination-color: #00ff33;
   }
 </style>
