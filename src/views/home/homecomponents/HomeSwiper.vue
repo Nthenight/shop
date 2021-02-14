@@ -1,15 +1,18 @@
 <!--Home页面轮播图-->
 <template>
-<swiper :options="swiperOption">
-  <swiper-slide v-for="item in banners" :key="item._id">
-       <a href="/home">
-         <img class="banner-img" :src="item.url"/>
-        </a> 
+  <swiper>
+       <swiper-slide v-for="item in banners" :key="item._id">
+         <a :href="item.link" target="_blank">
+           <img class="swiper-img" :src="item.url"/>
+         </a>
      </swiper-slide>
     <!-- 指示点 -->
-    <!-- <div class="swiper-pagination"  slot="pagination"></div> -->
+    <div class="swiper-pagination"  slot="pagination"></div>
 </swiper>
+   
+  
 </template>
+
 <script>
 
   import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
@@ -18,7 +21,8 @@
     name:'HomeSwiper',
     components: {
       Swiper,
-      SwiperSlide
+      SwiperSlide,
+      // SwiperShow
     },
     props:{
       banners:{
@@ -30,7 +34,11 @@
     },
     data() {
       return {
-        swiperOption:{
+      }
+    },
+    methods:{
+     swiperOption(){
+      const myswiper = new swiper('.swiper-container',{
         slidesPerView: 'auto',
         centeredSlides:true,
         spaceBetween: 10,
@@ -39,56 +47,35 @@
         autoplay: {
           delay: 2000,
           stopOnLastSlide: false,
-           disableOnInteraction: true,
+           disableOnInteraction: false,
           },
+        grabCursor:true,
         pagination: {
           el: '.swiper-pagination',
           dynamicBullets: true,
           clickable: true,
-         },
+          },
+        })
        }
-      }
     },
+    updated(){
+      this.swiperOption();
+    }
   }
 </script>
+
 <style scoped>
 @import '../../../../node_modules/swiper/swiper-bundle.min.css';
  .swiper-container {
+     display: flex;
       width: 100%;
-      height: 450px;
-      background: red;
     }
-    /* .swiper-wrapper{
-      height: 100%;
-      width: 100%;
-    } */
-    /* .banner-img{
+    .swiper-img{
       width: 100%;
       height: 100%;
-    } */
-    .swiper-slide {
-      /* width: 100%;
-      height: 100%; */
-      text-align: center;
-      font-size: 18px;
-      /* background: #fff; */
-
-      /* Center slide text vertically */
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      -webkit-align-items: center;
-      align-items: center;
     }
       .swiper-container{
-    /* --swiper-theme-color: #ff6600; */
-    --swiper-pagination-color: #00ff33;
+    --swiper-theme-color: #ff6600;
+    /* --swiper-pagination-color: #00ff33; */
   }
 </style>
