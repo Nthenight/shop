@@ -4,23 +4,34 @@
    <nav-bar class="home-nav">
     <div slot="center">首页</div>
     </nav-bar>
-    <swiper-show>
+    <!-- <swiper-show>
       <div slot="left">左边内容区</div>
       <div slot="center"><home-swiper :banners="banners"/></div>
       <div slot="right">右边内容区</div>
-    </swiper-show>  
-  <home-recommend :recommends='recommends'/>
-  <tab-control 
-  class="tab-control" 
-  :titles=titles
-  @tabClick='tabClick'/>
-  <goods-list :goods="goodslist"/>
+    </swiper-show>   -->
+    <scroll class="content" 
+    ref="scroll" 
+    :probe-type="3"
+    :pull-up-load="true"
+    @scrollvalue='contentscroll'
+    @pullingUp='loadMore'>
+      <home-swiper :banners="banners"/>
+     <home-recommend :recommends='recommends'/>
+     <tab-control 
+      class="tab-control" 
+      :titles=titles
+     @tabClick='tabClick'/>
+     <goods-list :goods="goodslist"/>
+    </scroll>
+    <back-top @click.native="backClick" v-show="this.scrollvalue"/>  
 </div>
 </template>
 
 <script>
 import NavBar from 'components/common/navbar/NavBar.vue';
 import TabControl from 'components/content/tabControl/TabControl';
+import Scroll from 'components/common/scroll/Scroll';
+import BackTop from 'components/content/backTop/BackTop'
 
 import HomeSwiper from 'views/home/homecomponents/HomeSwiper';
 import HomeRecommend from 'views/home/homecomponents/HomeRecommend';
@@ -34,6 +45,9 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
   components:{
     NavBar,
     TabControl,
+    Scroll,
+    BackTop,
+
     HomeSwiper,
     HomeRecommend,
     SwiperShow,
@@ -49,7 +63,8 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
           'news':{page:0,list:[]},
           'sell':{page:0,list:[]}
         },
-        goodsindex:'pop'
+        goodsindex:'pop',
+        scrollvalue:false,
       }
     },
   computed:{
@@ -73,7 +88,16 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
                break
          }
     },
-
+    backClick(){
+      this.$refs.scroll.scrollTo(0,0)
+    },
+    contentscroll(position){
+     this.scrollvalue = position.y<-1000
+    },
+    loadMore(){
+      // 实现上拉加载事件
+      this.getGoodsdata(this.goodsindex)
+    },
     /*
      网络相关的方法
      */
@@ -90,6 +114,9 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
         const a=this.goods[type].list.push(...res);
         // 实现页面的计数
         this.goods[type].page += 1;
+        // 进行下一次上拉加载
+        this.$refs.scroll.finishPullUp();
+         
       })
     }
   },
@@ -100,6 +127,10 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
     this.getGoodsdata('pop');
     this.getGoodsdata('news');
     this.getGoodsdata('sell');
+     },
+     updated(){
+      //  等异步图片加载完成后，刷新可滑动高度
+      this.$refs.scroll.scroll.refresh();
      } 
 }
 </script>
@@ -112,14 +143,26 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
     right: 0;
     background: var(--color-tint);
     color: #fff;
-    z-index: 2;
   }
   .tab-control{
     position: sticky;
     top: 40px;
-    z-index: 3;
   }
   #home{
+    position: relative;
     padding-top: 44px;
+    height: 100vh;
+    
+  }
+  .content{
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    /* height: calc(100% - 93px);  
+    margin-top: 44px; */
+   
   }
 </style>
