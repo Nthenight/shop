@@ -4,6 +4,12 @@
    <nav-bar class="home-nav">
     <div slot="center">首页</div>
     </nav-bar>
+    <tab-control 
+      class="tab-control" 
+      :titles=titles
+     @tabClick='tabClick'
+     ref="tabcontrol1"
+     v-show="isTabFixed"/>
     <!-- <swiper-show>
       <div slot="left">左边内容区</div>
       <div slot="center"><home-swiper :banners="banners"/></div>
@@ -15,12 +21,12 @@
     :pull-up-load="true"
     @scrollvalue='contentscroll'
     @pullingUp='loadMore'>
-      <home-swiper :banners="banners"/>
+      <home-swiper :banners="banners" @swiperimageLoad='imageLoad'/>
      <home-recommend :recommends='recommends'/>
      <tab-control 
-      class="tab-control" 
-      :titles=titles
-     @tabClick='tabClick'/>
+     :titles=titles
+     @tabClick='tabClick'
+     ref="tabcontrol2"/>
      <goods-list :goods="goodslist"/>
     </scroll>
     <back-top @click.native="backClick" v-show="this.scrollvalue"/>  
@@ -58,23 +64,34 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
         banners:[],
         recommends:[],
         titles:['流行','新款','精选'],
-        goods:{
+       //定义商品数据对象
+       goods:{
           'pop':{page:0,list:[]},
           'news':{page:0,list:[]},
           'sell':{page:0,list:[]}
         },
+        // 用于获取点击tabcontrol组件对应的商品类型
         goodsindex:'pop',
+        // 是否显示返回上方按钮
         scrollvalue:false,
+        // 设置tabcontrol的offsettop
+        taboffsetTop:0,
+        // 定义tabcontorl是否吸顶
+        isTabFixed:false,
+        // 定义页面的y轴坐标
+        saveY:0,
       }
     },
   computed:{
+    // 商品对应商品类型的数据列表的计算属性
     goodslist(){
-      return this.goods[this.goodsindex].list
+      return this.goods[this.goodsindex].list;
     }
   },
   methods:{
     /*事件相关的方法
     */
+    //  获取tabcontrol组件传过来的值，来判断显示哪种商品类型
        tabClick(index){   
          switch(index){
            case 0:
@@ -87,31 +104,45 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
                this.goodsindex='sell'
                break
          }
+         this.$refs.tabcontrol1.currentIndex=index;
+         this.$refs.tabcontrol2.currentIndex=index;
     },
+    // 控制返回顶部的坐标
     backClick(){
       this.$refs.scroll.scrollTo(0,0)
     },
+    // 控制是否显示返回顶部按钮
     contentscroll(position){
-     this.scrollvalue = position.y<-1000
+      // 判断上拉距离，实现返回顶部按钮的显示与否
+     this.scrollvalue = position.y<-1000;
+    //  判断上拉距离是否到了tabcontorl的offsettop距离
+    this.isTabFixed=(-position.y)>this.taboffsetTop;
     },
-    loadMore(){
-      // 实现上拉加载事件
+    // 实现上拉加载事件
+    loadMore(){  
       this.getGoodsdata(this.goodsindex)
+    },
+    // 实现轮播图加载完成后得到tabcontrol的offsettop值
+    imageLoad(){
+      this.taboffsetTop=this.$refs.tabcontrol2.$el.offsetTop;
     },
     /*
      网络相关的方法
      */
+    // 获取home页面的数据
     getHomeMultidata(){
         getHomeMultidata().then(res=>{
         this.banners=res.homeslide;
         this.recommends=res.homerecommend;
       })
     },
+    // 获取对应商品类型的数据
     getGoodsdata(type){
+      // 给对应类型的商品页码加1
       const page = this.goods[type].page+1;
       getHomeGoodsdata(type,page).then(res=>{
         // 将每次请求的10条数据依次存储在list数组中
-        const a=this.goods[type].list.push(...res);
+        this.goods[type].list.push(...res);
         // 实现页面的计数
         this.goods[type].page += 1;
         // 进行下一次上拉加载
@@ -120,8 +151,15 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
       })
     }
   },
+  activated(){
+    this.$refs.scroll.scrollTo(0,this.saveY,0);
+    this.$refs.scroll.refresh();
+  },
+  deactivated(){
+    this.saveY=this.$refs.scroll.getScrollY();
+  },
   created(){
-
+    // 请求home页面的相关数据
     this.getHomeMultidata();
     //请求商品数据
     this.getGoodsdata('pop');
@@ -129,28 +167,17 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
     this.getGoodsdata('sell');
      },
      updated(){
-      //  等异步图片加载完成后，刷新可滑动高度
-      this.$refs.scroll.scroll.refresh();
      } 
 }
 </script>
 
 <style scoped>
   .home-nav{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     background: var(--color-tint);
     color: #fff;
   }
-  .tab-control{
-    position: sticky;
-    top: 40px;
-  }
   #home{
     position: relative;
-    padding-top: 44px;
     height: 100vh;
     
   }
@@ -163,6 +190,9 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
     overflow: hidden;
     /* height: calc(100% - 93px);  
     margin-top: 44px; */
-   
   }
+ .tab-control{
+   position: relative;
+   z-index: 7;
+ }
 </style>

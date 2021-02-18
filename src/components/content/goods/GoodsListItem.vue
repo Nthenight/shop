@@ -1,6 +1,6 @@
-<!--  -->
+<!-- 商品 -->
 <template>
-<div class="item">
+<div class="item" @click="itemClick">
   <img :src="goodsitem.img" alt="图片">
   <div class="content">
     <p>{{goodsitem.content}}</p>
@@ -25,7 +25,12 @@ props:{
       return {}
     }
   }
+},
+methods:{
+itemClick(){
+  this.$router.push('/detail/'+this.goodsitem._id);
 }
+},
 }
 </script>
 

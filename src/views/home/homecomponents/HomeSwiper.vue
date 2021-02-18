@@ -3,7 +3,7 @@
   <swiper>
        <swiper-slide v-for="item in banners" :key="item._id">
          <a :href="item.link" target="_blank">
-           <img class="swiper-img" :src="item.url"/>
+           <img class="swiper-img" :src="item.url" @load="imageLoad"/>
          </a>
      </swiper-slide>
     <!-- 指示点 -->
@@ -34,9 +34,11 @@
     },
     data() {
       return {
+        isload:false
       }
     },
     methods:{
+      // swiper框架的配置
      swiperOption(){
       const myswiper = new swiper('.swiper-container',{
         slidesPerView: 'auto',
@@ -56,7 +58,14 @@
           clickable: true,
           },
         })
-       }
+       },
+                  // 监听轮播图的图片是否加载完成
+          imageLoad(){    
+            if(!this.isload){
+            this.$emit('swiperimageLoad'); 
+              this.isload=true;
+            }
+          }
     },
     updated(){
       this.swiperOption();

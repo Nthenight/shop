@@ -1,7 +1,9 @@
-<!--  -->
+<!-- 商品组件 -->
 <template>
   <div class="goods">
-   <goods-list-item v-for="item in goods" :key="item._id" :goodsitem='item'/>
+   <goods-list-item v-for="item in goods" 
+   :key="item._id" 
+   :goodsitem='item'/>
 </div>
 </template>
 
