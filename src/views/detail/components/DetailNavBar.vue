@@ -1,4 +1,4 @@
-<!-- 详情页组件 -->
+<!-- 详情页navBar组件 -->
 <template>
   <div>
      <nav-bar>
@@ -33,6 +33,7 @@ components:{
     // 标题内容样式切换
     titleClick(index){
       this.indexClick=index;
+      this.$emit('titleClick',index)
     },
     // 返回上一页事件
     backPage(){

@@ -31,6 +31,7 @@ itemClick(){
   this.$router.push('/detail/'+this.goodsitem._id);
 }
 },
+created(){this.goodsitem.price=this.goodsitem.price.toFixed(2)},
 }
 </script>
 

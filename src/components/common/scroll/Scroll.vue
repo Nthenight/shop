@@ -70,6 +70,7 @@ methods:{
   refresh(){
     this.scroll && this.scroll.refresh();
   },
+// 获取滚动的Y值
   getScrollY(){
     return this.scroll ? this.scroll.y:0;
   },

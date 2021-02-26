@@ -3,7 +3,7 @@
   <swiper>
        <swiper-slide v-for="item in banners" :key="item._id">
          <a :href="item.link" target="_blank">
-           <img class="swiper-img" :src="item.url" @load="imageLoad"/>
+           <img class="swiper-img" :src="item.url" @load="imageLoad" alt="轮播图"/>
          </a>
      </swiper-slide>
     <!-- 指示点 -->

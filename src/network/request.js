@@ -10,7 +10,7 @@ export function request(config) {
     /**
      * 手机端调试接口
      */
-    // baseURL: 'http://192.168.0.104:3000/index',
+    // baseURL: 'http://192.168.0.114:3000/index',
     timeout:5000
   })
   instance.interceptors.request.use(config => {
