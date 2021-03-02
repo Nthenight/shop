@@ -17,8 +17,7 @@ name:'DetailBottomBar',
   },
 methods:{
   buyClick(){
-    console.log('购买');
-    // this.$emit('')
+    this.$emit('buyClick')
   },
   addClick(){
     this.$emit('addClick')

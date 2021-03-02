@@ -1,3 +1,4 @@
+// 混入函数
 import BackTop from 'components/content/backTop/BackTop'
 
 export const backTopMixin = {

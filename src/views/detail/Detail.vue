@@ -3,18 +3,13 @@
   <div id="detail">
   <detail-nav-bar class="nav-bar" @titleClick='titleClick' ref="nav"/>
   <scroll class="contents" ref="scroll" @scrollvalue='contentScroll' :probe-type='3'>
-     <ul>
-    <li v-for="item in $store.state.cartList">
-      {{item}}
-    </li>
-  </ul>
     <div class="item-img"><img :src="this.res.img" alt="图片"></div>
     <detail-content :content='res'></detail-content>
    <detail-param ref="param":paramdata='param'></detail-param>
     <detail-comment ref="comment" :comment='comment'></detail-comment>
   </scroll>
   <back-top @click.native="backClick" v-show="this.scrollvalue"/>  
-  <detail-bottom-bar @addClick='addCart'/>
+  <detail-bottom-bar @addClick='addToCart' @buyClick='buyClick'/>
 </div>
 </template>
 
@@ -28,6 +23,10 @@ import DetailBottomBar from './components/DetailBottomBar'
 import {getDetailData,getDetailParam} from 'network/detail';
 import Scroll from 'components/common/scroll/Scroll';
 import {backTopMixin} from 'common/mixin';
+import { mapActions } from 'vuex';
+
+
+
 export default {
 name:'Detail',
   data () {
@@ -56,15 +55,28 @@ components:{
   Scroll,
 },
 methods:{
+  ...mapActions(['addCart','pay']),
   // 将商品添加到购物车
-  addCart(){
-    console.log('添加成功');
+  addToCart(){
     const product={};
     product.id=this.itemid;
     product.img=this.res.img;
     product.price=this.res.price.toFixed(2);
     product.content=this.res.content;
-    this.$store.dispatch('addCart',product)
+    
+    this.addCart(product).then(res=>{
+      this.$toast.show(res,1500)
+    })
+  },
+  // 购买按钮事件
+  buyClick(){
+    const product={};
+    product.id=this.itemid;
+    product.img=this.res.img;
+    product.price=this.res.price.toFixed(2);
+    product.content=this.res.content;
+    this.pay(product);
+    this.$toast.show('购买成功!')
   },
   // 点击标题跳转到对应的区域
   titleClick(index){

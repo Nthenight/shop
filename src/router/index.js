@@ -16,22 +16,22 @@ const routes = [
   },
   {
     path: '/home',
-    // name: 'Home',
+    name: 'Home',
     component: Home
   },
   {
     path: '/cart',
-    // name: 'Cart',
+    name: 'Cart',
     component:Cart
   },
   {
     path: '/category',
-    // name: 'Category',
+    name: 'Category',
     component: Category
   },
   {
     path: '/profile',
-    // name: 'Profile',
+    name: 'Profile',
     component: Profile
   },
   {
