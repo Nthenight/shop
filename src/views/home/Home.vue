@@ -165,9 +165,7 @@ import {getHomeMultidata,getHomeGoodsdata} from 'network/home';
     this.getGoodsdata('pop');
     this.getGoodsdata('news');
     this.getGoodsdata('sell');
-     },
-     updated(){
-     } 
+     }
 }
 </script>
 

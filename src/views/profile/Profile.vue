@@ -7,10 +7,11 @@
     </nav-bar>
     <div class="userifo">
       <div class="user-img"><img src="~@/assets/img/user/user.svg" alt="用户图片"></div>
-      <span>用户名：</span>
+      <span>用户名：{{this.userName}}</span>
     </div>
    
-    <div class="itemifo"><span>已购商品信息</span>
+    <div class="itemifo">
+      <span>已购商品信息</span>
     </div>  
     <goods-list/>
 </div>
@@ -25,6 +26,7 @@ export default {
 name:'Profile',
   data () {
     return {
+  userName:'假数据名'
     }
   },
 components:{
@@ -62,6 +64,7 @@ computed:{
 }
 .userifo span{
   flex: auto;
+  font-weight: 700;
 }
 .itemifo{
   padding: 5px;
