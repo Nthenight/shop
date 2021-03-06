@@ -6,10 +6,12 @@
      <span>（{{cartLength}}）</span>
      </div>
   </nav-bar>
-    <div class="show" v-show="messageShow">
-    <span>{{infomation}}</span>
-  </div>
-  <!-- <message-box :array='cartLength'/> -->
+  
+  <message-box 
+  :value='cartLength' 
+  @message='messageisShow' 
+  v-show="this.messageShow"
+  ref="isShow"/>
   <cart-list/>
   <cart-bottom-bar></cart-bottom-bar>
 </div>
@@ -20,19 +22,16 @@ import NavBar from 'components/common/navbar/NavBar'
 import CartList from './components/CartList'
 import CartBottomBar from './components/CartBottomBar'
 
-// import MessageBox from 'components/content/messageBox/MessageBox';
 
 import {mapGetters} from 'vuex'; 
-// import {messageBox} from 'common/mixin';
+import {messages} from 'common/mixin';
 export default {
 name:'Cart',
   data () {
     return {
-    messageShow:false,
-    infomation:''
     }
   },
-// mixins:[messageBox],
+mixins:[messages],
 computed:{
   ...mapGetters(['cartLength'])
 },
@@ -40,22 +39,12 @@ components:{
   NavBar,
   CartList,
   CartBottomBar,
-  // MessageBox
-},
-methods:{
-  isShow(number,message='请输入提示信息!') {
-        if(number==0){
-          this.messageShow=true;
-          this.infomation=message;
-        }
-        else this.messageShow = false
-      },
 },
     activated(){
-      this.isShow(this.cartLength,'请购买商品~')
+      this.$refs.isShow.isShow(this.cartLength,'请购买商品~');
     },
     updated(){
-      this.isShow(this.cartLength,'请购买商品~')
+       this.$refs.isShow.isShow(this.cartLength,'请购买商品~');
     }
 }
 </script>
@@ -67,13 +56,5 @@ methods:{
 .nav-bar{
   color: #fff;
   background: var(--color-tint);
-}
-.show{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  font-size: 16px;
-  color: 	#A3A3A3;
 }
 </style>

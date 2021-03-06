@@ -7,5 +7,8 @@ export default {
   },
   paylist(state) {
     return state.payList;
+  },
+  payLength(state) {
+    return state.payList.length;
   }
 }

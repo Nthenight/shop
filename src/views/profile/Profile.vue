@@ -3,7 +3,7 @@
   <div id="user">
     <nav-bar class="nav-bar">
       <div slot="center">我的</div>
-      <div slot="right">退出</div>
+      <div slot="right" @click="exit">退出</div>
     </nav-bar>
     <div class="userifo">
       <div class="user-img"><img src="~@/assets/img/user/user.svg" alt="用户图片"></div>
@@ -13,6 +13,11 @@
     <div class="itemifo">
       <span>已购商品信息</span>
     </div>  
+      <message-box 
+  :value='payLength' 
+  @message='messageisShow' 
+  v-show="this.messageShow"
+  ref="isShow"/>
     <goods-list/>
 </div>
 </template>
@@ -22,6 +27,7 @@ import GoodsList from './components/GoodsList';
 import NavBar from 'components/common/navbar/NavBar';
 
 import {mapGetters} from 'vuex'
+import {messages} from 'common/mixin';
 export default {
 name:'Profile',
   data () {
@@ -29,13 +35,25 @@ name:'Profile',
   userName:'假数据名'
     }
   },
+mixins:[messages],
 components:{
   GoodsList,
   NavBar
 },
-computed:{
-  ...mapGetters(['paylist'])
+methods:{
+  exit(){
+    this.$toast.show('本功能还未完成!')
+  }
 },
+computed:{
+  ...mapGetters(['paylist','payLength'])
+},
+    activated(){
+      this.$refs.isShow.isShow(this.payLength,'空空如也~');
+    },
+    updated(){
+       this.$refs.isShow.isShow(this.payLength,'空空如也~');
+    }
 }
 </script>
 
