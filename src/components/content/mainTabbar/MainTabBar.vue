@@ -6,10 +6,10 @@
         <img slot="ativeImg" src="~@/assets/img/index/indexaf.svg" alt="">
         <div slot="text">首页</div> 
       </tab-bar-item>
-      <tab-bar-item  path="/category">
-        <img slot="img" src="~@/assets/img/category/category.svg" alt="">
-        <img slot="ativeImg" src="~@/assets/img/category/categoryaf.svg" alt="">
-        <div slot="text">分类</div> 
+      <tab-bar-item  path="/search">
+        <img slot="img" src="~@/assets/img/search/Searchbf.svg"alt="">
+        <img slot="ativeImg" src="~@/assets/img/search/Searchaf.svg" alt="">
+        <div slot="text">搜索</div> 
       </tab-bar-item>
       <tab-bar-item  path="/cart">
         <img slot="img" src="~@/assets/img/cart/cart.svg" alt="">

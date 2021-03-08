@@ -49,6 +49,7 @@ props:{
 <style scoped>
 .content{
   position: relative;
+  padding: 10px;
 }
 .list-item{
   display: flex;
@@ -59,15 +60,16 @@ props:{
   height: 100%;
   width: 100%;
   padding: 5px;
+  margin: auto 0;
 }
 .item-img img{
   height: 100%;
   width: 100%;
 }
 .item-content{
-  flex: auto;
   font-size: 12px;
-  padding: 10px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .item-price{
   color: #CD0000;

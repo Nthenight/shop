@@ -10,11 +10,6 @@
      @tabClick='tabClick'
      ref="tabcontrol1"
      v-show="isTabFixed"/>
-    <!-- <swiper-show>
-      <div slot="left">左边内容区</div>
-      <div slot="center"><home-swiper :banners="banners"/></div>
-      <div slot="right">右边内容区</div>
-    </swiper-show>   -->
     <scroll class="content" 
     ref="scroll" 
     :probe-type="3"

@@ -42,7 +42,7 @@ components:{
 },
 methods:{
   exit(){
-    this.$toast.show('本功能还未完成!')
+    this.$toast.show('本功能还未完成!');
   }
 },
 computed:{
@@ -58,6 +58,7 @@ computed:{
 </script>
 
 <style scoped>
+
 .nav-bar{
   background: var(--color-tint);
   color: #fff;
