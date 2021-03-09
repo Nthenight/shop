@@ -53,7 +53,8 @@ methods:{
     else {  
      getSearchContent(content).then(res=>{
        if(res.length==0){
-         this.$toast.show('未找到该商品，请重新输入')
+         this.$toast.show('未找到该商品，请重新输入');
+         this.changedata=[];
        } else{
          this.goodslist.push(...res);
         const a=this.goodslist;

@@ -2,7 +2,7 @@
 <template>
   <div class="search">
   <div class="item-content">
-    <input type="text" v-model="message" placeholder="请输入内容">
+    <input type="text" v-model.lazy="message" placeholder="请输入内容">
   </div>
   <span class="item-button" @click="searchClick">
     <img src="~@/assets/img/search/search.svg" alt='搜索图片'></span>
